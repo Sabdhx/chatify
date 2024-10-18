@@ -4,13 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "experss": "^0.0.1-security"
+    "cookie-parser": "^1.4.7",
+    "experss": "^0.0.1-security",
+    "jsonWebToken": "npm:jsonwebtoken@^9.0.2",
+    "mongodb": "^6.9.0"
   },
   "devDependencies": {
     "bcrypt": "^5.1.1",
