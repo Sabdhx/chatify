@@ -6,6 +6,7 @@ const messageSchema = new mongoose.Schema({
     ref: 'User', // Reference to the User model
     required: true,
   },
+  
   receiver: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // Reference to the User model
@@ -13,8 +14,12 @@ const messageSchema = new mongoose.Schema({
   },
   content: {
     type: String,
-    required: true,
+    required: false,
   },
+  imageUrl:
+    {type: String,
+    required: false}
+  ,
   timestamp: {
     type: Date,
     default: Date.now,

@@ -1,11 +1,10 @@
 const express = require("express")
 const router = express.Router();
-const {storingUserInfo,deleteUser,allUsers} = require("../controlllers/auth.js");
-const {tokenIdentifier} = require("../middleWare/tokenIdentifier.js");
+const {deleteUser, signup, login} = require("../controlllers/auth.js");
 
 
-router.post("/createUser", storingUserInfo);
+router.post("/register", signup);
+router.post("/login", login);
 router.delete("/delete/:id",deleteUser)
-router.get("/users",tokenIdentifier,allUsers)
 
 module.exports = router

@@ -1,29 +1,63 @@
 const userSchema = require("../models/user.js")
 const dotenv = require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
+ const signup = async (req, res) => {
+  const { name, email, password,profilePicture} = req.body;
+  console.log("name :" + name);
+  console.log("email :" + email);
+  console.log("password :" + password);
+  console.log("profilePicture :" + profilePicture);
+
+  try {
+     const newUser = await userSchema.create({
+        name,
+        email,
+        password,
+        profilePicture
+      });
+    
+
+    res.status(201).json({ message: "Registration successful!", user: newUser });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
 
-const storingUserInfo = async (req, res) => {
-    const { email, username, profilePicture } = req.body;
-    const authHeader = req.headers.authorization;
-    const decoded = jwt.decode(authHeader); // Decode the token
-    console.log(decoded)
-
+ const login = async (req, res) => {
+    const { email, password } = req.body;
+  
+    try {
+      let user = await userSchema.findOne({ email });
+      const age = 1000 * 60 * 60 * 24 * 7; 
+      const token = jwt.sign(
+        {
+          email: user.email,
+          name: user.name,
+          id: user._id,
+        },
+        process.env.secret  ,
+        { expiresIn: age }
+      );
+  
+      const { password: userPassword, ...userInfo } = user._doc;
+  
+      res.cookie("token", token, {
+        maxAge: age,
    
-
-    // Use email directly
-    const findEmail = await userSchema.findOne({ email });
-
-    if (findEmail) {
-
-        return res.status(500).json({ message: "there is already a user with this email" });
-
-
+        sameSite: 'Lax',
+      }).status(200).json(userInfo);
+  
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Failed to login!" });
     }
+  };
 
-    const response = await userSchema.create(req.body);
-    res.status(200).json(response);
-}
 
 const deleteUser = async (req, res) => {
     const id = req.params.id;
@@ -31,9 +65,6 @@ const deleteUser = async (req, res) => {
     res.status(200).json(response)
 }
 
-const allUsers = async (req, res) => {
-    const response = await userSchema.find();
-    res.status(200).json(response);
-}
 
-module.exports = { storingUserInfo, deleteUser, allUsers };
+
+module.exports = { signup, deleteUser,login };
