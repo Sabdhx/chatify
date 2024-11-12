@@ -15,7 +15,7 @@ function ChatsBlock(props) {
   const [editingMessageId, setEditingMessageId] = useState(null);
   const [editedContent, setEditedContent] = useState("");
   const [selectedFile, setSelectedFile] = useState(null); // New state for the selected file
-
+  // const [notification , setnNotification] = useState(0)
   const fetchChats = async () => {
     if (!input && !selectedFile) {
       alert("Please enter a message or upload an image."); // Alert the user
@@ -28,7 +28,7 @@ function ChatsBlock(props) {
         formData.append('file', selectedFile); // Append the selected file
       }
       
-      const response = await axios.post(`http://localhost:5000/messages/sendMessage/${props.receiverId}`, {content:input, imageUrl:selectedFile});
+      const response = await axios.post(`http://localhost:5000/messages/sendMessage/${props.receiverId}`, {content:input, imageUrl:selectedFile });
 
       console.log("Response from server:", response.data);
       setInput("");
@@ -70,16 +70,16 @@ function ChatsBlock(props) {
  
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col  h-[90%]">
       {props.loading ? (
-        <div className="text-center text-gray-500 mt-4">Loading...</div>
+        <div className="text-center text-gray-800 mt-4">Loading...</div>
       ) : (
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
           {props?.chatsArray?.messages?.map((item) => (
             <div
               key={item._id}
               className={`group px-4 py-2 rounded-lg shadow-sm text-white ${item.sender === user.id
-                ? "ml-auto bg-blue-500 text-right"
+                ? "ml-auto bg-blue-500 text-right "
                 : "mr-auto bg-gray-500 text-black"
               }`}
               style={{ maxWidth: "70%", width: "fit-content" }}
@@ -95,7 +95,7 @@ function ChatsBlock(props) {
                 ) : (
                   <>
                     {item.content && <h1 className="mx-2">{item.content}</h1>}
-                    {item.imageUrl && <img src={item.imageUrl} alt="Uploaded" className="size-[40%] rounded-lg" />}
+                    {item.imageUrl && <img src={item.imageUrl} alt="Uploaded" className="w-[40%] rounded-lg bg-white" />}
                   </>
                 )}
 

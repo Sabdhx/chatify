@@ -137,7 +137,7 @@ export default function Register() {
 </div>
           <p className="mt-10 text-center text-sm text-gray-500">
             Not a member?{' '}
-            <a href="/login" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+            <a onClick={()=>{navigate("/login")}} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
               Log in here
             </a>
           </p>

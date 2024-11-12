@@ -1,44 +1,26 @@
-import HomePage from "./components/HomePage";
-// import Login from "./loginPage/Login";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
+import React from 'react';
+import { BrowserRouter, createBrowserRouter, Route, Router, RouterProvider, Routes } from 'react-router-dom';
+import FirstPage from './components/FirstPage';
+import Login from './auth/Login';
+import Register from './auth/Register';
+import HomePage from './components/HomePage';
+import GoogleAuth from './auth/GoogleAuth';
+import Navbar from './headers/Navbar';
+import axios from "axios"
 axios.defaults.withCredentials = true;
-import axios from "axios";
-import Login from "./auth/Login";
-import Register from "./auth/Register";
-import Context from "./context/Context";
-import FirstPage from "./components/firstPage";
-
 function App() {
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <FirstPage />,
-    },
-    {
-      path: "/login",
-      element: <Login />,
-    },
-    {
-      path: "/home", 
-      element: <HomePage />,
-    },
-    {
-      path: "/Register", 
-      element: <Register />,
-    },
-    
-  ]);
-
   return (
-    <>
-    <Context>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<FirstPage />} />
+        <Route path="/login" element={<Login/>} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/home" element={<HomePage />} />
+  
+      </Routes>
 
-    <RouterProvider router={router} />
-
-    </Context>
-    </>
-  );
+    </BrowserRouter>
+  )
 }
-
 export default App;

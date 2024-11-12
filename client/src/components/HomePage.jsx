@@ -12,9 +12,14 @@ function HomePage() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  
     console.log(filteredChats);
-  }, []);
+  
+
+  const handleNotification=async()=>{
+    const response= await axios("http://localhost:5000/messages/notify",{});
+    console.log(response)
+  }
 
   const handleId = async (id) => {
     try {
@@ -22,7 +27,7 @@ function HomePage() {
       console.log("Receiver ID set to:", id);
       setLoading(true);
 
-      const response = await axios.get(`http://localhost:5000/messages/filterChats?senderId=${user.id}&receiverId=${id}`);
+      const response = await axios.get(`http://localhost:5000/messages/filterChats?senderId=${user.id}&receiverId=${id}`,{chatId:filteredChats._id});
 
       setFilteredChats(response.data || []);
       setLoading(false);
@@ -57,6 +62,9 @@ function HomePage() {
                 key={item._id}
                 className="flex justify-around items-center space-x-4 bg-gray-600 p-3 rounded-lg shadow-md mb-2 transition-transform transform hover:scale-105 hover:shadow-lg duration-300 cursor-pointer"
               >
+                {
+                
+                }
                   <h1 className="text-lg font-medium">{item.name}</h1>
                 <img
                   src={item.profilePicture[0]}

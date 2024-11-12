@@ -16,6 +16,7 @@
     "axios": "^1.7.7",
     "cloudinary": "^2.5.1",
     "cookie.js": "^7.0.1",
+    "firebase": "^11.0.1",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",
     "react": "^18.3.1",

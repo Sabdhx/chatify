@@ -8,6 +8,7 @@ app.use(cookieParser());
 
 const tokenIdentifier = async (req, res, next) => {
  const token = req.cookies.token;
+ console.log(token)
   const decoded = jwt.decode(token);
 //   console.log(decoded)
    req.sender = decoded.id
