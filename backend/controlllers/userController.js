@@ -10,6 +10,15 @@ const allUsers = async(req,res)=>{
 }
 
 
+const allUsersIncludingMe = async(req,res)=>{
+    try{
+        const response  = await userSchema.find()
+        res.status(200).json(response)
+    }catch(error){
+        res.status(200).json(error.message)
+    }
+}
+
 const singleUser=async(req,res)=>{
     const {id} = req.params;
     try{
@@ -19,4 +28,4 @@ const singleUser=async(req,res)=>{
         res.status(200).json(error.message)
     }
 }
-module.exports = {allUsers,singleUser}
+module.exports = {allUsers,singleUser,allUsersIncludingMe}

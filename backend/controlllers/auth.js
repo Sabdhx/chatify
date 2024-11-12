@@ -65,16 +65,24 @@ const deleteUser = async (req, res) => {
 
 
 const logout = async (req, res) => {
-  const userLogout = async (req, res) => {
+  try {
+    // Clear the token cookie by matching the domain and path
     res.clearCookie("token", {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none"
-    })
-      .send({ message: "cookie cleared successfully" })
-  }
+      sameSite: "Lax",     // Same setting used when setting the cookie
+      domain: "localhost", // Match the domain for local development
+      path: "/",           // Match the path, usually '/'
+      expires: new Date(0) // Expire the cookie by setting the date to 0 (past date)
+    });
 
-}
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (err) {
+    console.error("Error during logout:", err);
+    res.status(500).json({ message: "Failed to log out" });
+  }
+};
+
+
+
 
 // const LoginWithGoogle = async (req, res) => {
 //   const { name, email, profilePicture } = req.body;
