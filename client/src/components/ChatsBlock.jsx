@@ -10,32 +10,42 @@ import { MdOutlineAttachFile } from "react-icons/md";
 
 function ChatsBlock(props) {
   const { user } = useContext(MyContext);
-  const [input, setInput] = useState(null);
+  const [input, setInput] = useState("");
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [editingMessageId, setEditingMessageId] = useState(null);
   const [editedContent, setEditedContent] = useState("");
   const [selectedFile, setSelectedFile] = useState(null); // New state for the selected file
   // const [notification , setnNotification] = useState(0)
-  const fetchChats = async () => {
+   console.log(props?.groupInformation?._id)
+  const sendMessage = async () => {
     if (!input && !selectedFile) {
       alert("Please enter a message or upload an image."); // Alert the user
       return; // Exit the function
     }
-    try {
-      const formData = new FormData();
-      formData.append('content', input);
-      if (selectedFile) {
-        formData.append('file', selectedFile); // Append the selected file
-      }
-      
-      const response = await axios.post(`http://localhost:5000/messages/sendMessage/${props.receiverId}`, {content:input, imageUrl:selectedFile });
 
-      console.log("Response from server:", response.data);
-      setInput("");
-      setSelectedFile(null); // Reset the selected file
-    } catch (error) {
-      console.error("Error sending message:", error);
+    if(props?.groupInformation?._id){
+      const response = await axios.post(`http://localhost:5000/groupChats/sendMessageInGc/${props.groupInformation._id}`, {content:input, imageUrl:selectedFile });
+      console.log(response.data);
+
+    }else{
+
+      try {
+        const formData = new FormData();
+        formData.append('content', input);
+        if (selectedFile) {
+          formData.append('file', selectedFile); // Append the selected file
+        } 
+        const response = await axios.post(`http://localhost:5000/messages/sendMessage/${props.receiverId}`, {content:input, imageUrl:selectedFile });
+        console.log("Response from server:", response.data);
+        setInput("");
+        setSelectedFile(null); // Reset the selected file
+      } catch (error) {
+        console.error("Error sending message:", error);
+      }
     }
+
+     
+ 
   };
 
   const deletion = async (id) => {
@@ -157,7 +167,7 @@ function ChatsBlock(props) {
         
         <button
           className="bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-600 transition duration-200"
-          onClick={fetchChats}
+          onClick={sendMessage}
         >
           Send
         </button>

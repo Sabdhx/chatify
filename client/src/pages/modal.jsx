@@ -24,11 +24,13 @@ function UserListPage() {
     }, []);
 
     const handleChoosing = async (index) => {
+
         setIdss(prevState => {
             if (prevState.includes(index)) {
                 return prevState;
             }
             const updatedState = [...prevState, index];
+            console.log(updatedState)
             return updatedState;
         });
     };
@@ -38,9 +40,7 @@ function UserListPage() {
         console.log(response);
     };
 
-    const goBack = () => {
-        navigate(-1);  // Navigate back to the previous page
-    };
+   
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col items-center py-12">

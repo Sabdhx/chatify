@@ -1,18 +1,41 @@
 const mongoose = require("mongoose");
 const messageSchema = new mongoose.Schema({
+  participants:[{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"User",
+    require:true
+}],
+
+  chatType: {
+    type: String,
+    enum: ["ChatGroup", "PersonalChat"], 
+    default: "ChatGroup",
+  },
   name:{
      type:String,
-     requrie:true
+     require:true
   },
-    participants:{
-         type:mongoose.Schema.Types.ObjectId,
-         ref:"User",
-         requrie:true
-    },
+   
     messages:[
       {  
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Message",
+        sender:{
+          type:mongoose.Schema.Types.ObjectId,
+          ref:"User"
+        },
+        recievers:[
+          {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"User"
+          }
+        ],
+        content:{
+          type:String,
+          require:true
+        },
+        sendAt:{
+          type:Date,
+          default:Date.now
+        }
     },
     ]
 },{timestamps:true})

@@ -153,6 +153,7 @@ const logout = async (req, res) => {
 
 
  const google = async (req, res, next) => {
+  const {name} = req.body
   try {
     const user = await userSchema.findOne({ email: req.body.email });
     if (user) {
@@ -173,9 +174,8 @@ const logout = async (req, res) => {
         Math.random().toString(36).slice(-8);
       const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
       const newUser = new userSchema({
-        name:
-          req.body.name.split(' ').join('').toLowerCase() +
-          Math.random().toString(36).slice(-4),
+        name,
+         
         email: req.body.email,
         password: hashedPassword,
         profilePicture: req.body.profilePicture,

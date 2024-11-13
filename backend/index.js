@@ -8,7 +8,7 @@ const auth= require("./routes/authRoute.js")
 const port = process.env.PORT; 
 const Messages = require("./routes/messageSendingRoute.js")
 const users = require("./routes/userRoutes.js")
-
+const group = require("./routes/GroupChatRoutes.js")
 app.use(cors({
   origin: 'http://localhost:5173',  
   credentials: true
@@ -27,6 +27,7 @@ mongoose.connect(process.env.mongoURL)
   app.use("/auth" , auth);
   app.use("/messages" , Messages);
   app.use("/users" , users);
+  app.use("/groupChats" , group)
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

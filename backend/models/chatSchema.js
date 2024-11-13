@@ -1,6 +1,11 @@
 const mongoose =  require("mongoose")
 
 const conversationSchema = new mongoose.Schema({
+  type:{
+     type:String,
+     enum:["GroupChat" , "personalChat"],
+     default:"personalChat"
+  },
     members: [
       {
         type: mongoose.Schema.Types.ObjectId,
