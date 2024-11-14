@@ -56,19 +56,17 @@ function HomePage() {
     };
     fetchData();
   }, []);
-console.log(groupChats)
 
 
 
-   const handleGroupChats=async(id)=>{
-    console.log(id); 
-    setGroupInfo(id)
-    window.location.reload()
-
-    const groupChats = await axios.get(`http://localhost:5000/groupChats/filterGroup?_id=${id._id}`);
-       
+   const handleGroupChatsId=async(id)=>{
+    
+    setReciever(id._id);
+    setLoading(true);
+    const groupChats = await axios.get(`http://localhost:5000/groupChats/filterGroup?id=${id._id}`);
+    setFilteredChats(groupChats.data)
         console.log(groupChats)
-
+        setLoading(false);
    } 
 
 
@@ -109,7 +107,7 @@ console.log(groupChats)
 {groupChats.length > 0 ? (
   groupChats.map((item) => (
     <div
-      onClick={() => handleGroupChats(item)}
+      onClick={() => handleGroupChatsId(item)}
       key={item._id}
       className="flex justify-around items-center space-x-4 bg-gray-600 p-3 rounded-lg shadow-md mb-2 transition-transform transform hover:scale-105 hover:shadow-lg duration-300 cursor-pointer"
     >

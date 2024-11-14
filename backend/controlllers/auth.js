@@ -39,6 +39,7 @@ const login = async (req, res) => {
         email: user.email,
         name: user.name,
         id: user._id,
+        // profileImage : req.body.profilePicture 
       },
       process.env.secret,
       { expiresIn: age }
@@ -157,7 +158,7 @@ const logout = async (req, res) => {
   try {
     const user = await userSchema.findOne({ email: req.body.email });
     if (user) {
-      const token = jwt.sign({ id: user._id }, process.env.secret);
+      const token = jwt.sign({ id: user._id , profileImage : req.body.profilePicture }, process.env.secret);
       console.log(token)
 
       const { password: pass, ...rest } = user._doc;
@@ -178,10 +179,12 @@ const logout = async (req, res) => {
          
         email: req.body.email,
         password: hashedPassword,
-        profilePicture: req.body.profilePicture,
+        // profilePicture: req.body.profilePicture,
       });
       await newUser.save();
-      const token = jwt.sign({ id: newUser._id }, process.env.secret);
+      const token = jwt.sign({ id: newUser._id ,
+        //  profileImage : req.body.profilePicture 
+        }, process.env.secret);
       console.log(token)
 
       const { password: pass, ...rest } = newUser._doc;

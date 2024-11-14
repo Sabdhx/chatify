@@ -1,4 +1,5 @@
 const Gc = require("../models/groupChats.js")
+const Message = require("../models/messageModel.js");
 
 
 const makeAgroup = async (req, res) => {
@@ -22,23 +23,52 @@ const getAllGc = async (req, res) => {
    res.status(200).json(response)
 }
 
-const FilterGroupChats = async (req, res) => {
-   const { _id } = req.query;
-   console.log(_id)
-   const filtering = await Gc.findById(_id);
-   res.status(200).json(filtering)
-}
-
-
-
 
 const sendMessageToGc = async (req, res) => {
-    const {content }  = req.body;
+    const {content , imageUrl ,type  }  = req.body;
+    console.log(req.sender)
     const {id} = req.params;
-    const response = await Gc.create({
+    const chatSchema = await Gc.findById(
+      id 
       
-    })
-   res.status(200).json(content)
+    );
+    if(!chatSchema){
+      res.status(200).json({message:"there is not chat group"})
+    }
+    
+    const receiver = chatSchema.participants.filter(
+      (participant) => !participant.equals(req.sender)
+    );
+    
+    const message = await Message.create(
+      {
+      sender:req.sender,
+      receiver,
+      content,
+      imageUrl,
+      type
+    });
+    chatSchema.messages.push(message._id);
+
+    await Promise.all([chatSchema.save() , message.save()]);
+
+      console.log(message)
+    res.status(200).json(chatSchema)
 }
+
+
+const FilterGroupChats = async (req, res) => {
+  const { id } = req.query;
+  
+  const filtering = await Gc.findById(id).populate("messages");
+  console.log(filtering)
+  res.status(200).json(filtering)
+}
+
+
+
+
+
+
 
 module.exports = { sendMessageToGc, FilterGroupChats, getAllGc, makeAgroup } 

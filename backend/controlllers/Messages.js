@@ -57,44 +57,41 @@ const deleteMessage = async (req, res) => {
 
 
 const editMessage = async (req, res) => {
-   const { id } = req.params;          // Message ID to identify the message
-   const { content } = req.body;        // New content for the message
+   const { id } = req.params;       
+   const { content } = req.body;        
 
    console.log("New content:", content);
    console.log("Message ID:", id);
 
    try {
-      // Update the message with new content
       const updatedMessage = await Message.findByIdAndUpdate(
          id,
-         { content },   // Only update the content field
-         { new: true }  // Return the updated document
+         { content },   
+         { new: true } 
       );
 
       if (!updatedMessage) {
-         // If the message isn't found, respond with a 404 error
          return res.status(404).json({ message: "Message not found" });
       }
 
-      // Successfully updated, send the updated message back
       res.status(200).json(updatedMessage);
 
    } catch (error) {
       console.error("Error updating message:", error.message);
-      // Send error response
       res.status(500).json({ message: "Error updating message", error: error.message });
    }
 };
 
 const filteringChats = async (req, res) => {
    const { senderId, receiverId } = req.query;
-   const currentUserId = req.sender; // Current user opening the chat
+   const currentUserId = req.sender; 
 
    try {
       const conversationData = await conversation.findOne({
          members: { $all: [senderId, receiverId] }
       }).populate("messages");
-
+      
+    console.log(conversationData)
    console.log("this is conversation id " + conversationData._id) 
 
 

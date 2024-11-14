@@ -36,7 +36,7 @@ function UserListPage() {
     };
 
     const sendRequest = async () => {
-        const response = await axios.post("http://localhost:5000/messages/GroupChat", { idss, input });
+        const response = await axios.post("http://localhost:5000/groupChats/GroupChat", { idss, input });
         console.log(response);
     };
 

@@ -16,15 +16,16 @@ function ChatsBlock(props) {
   const [editedContent, setEditedContent] = useState("");
   const [selectedFile, setSelectedFile] = useState(null); // New state for the selected file
   // const [notification , setnNotification] = useState(0)
-   console.log(props?.groupInformation?._id)
+
   const sendMessage = async () => {
     if (!input && !selectedFile) {
       alert("Please enter a message or upload an image."); // Alert the user
       return; // Exit the function
-    }
-
-    if(props?.groupInformation?._id){
-      const response = await axios.post(`http://localhost:5000/groupChats/sendMessageInGc/${props.groupInformation._id}`, {content:input, imageUrl:selectedFile });
+    }   
+    if(props?.chatsArray?.chatType === "ChatGroup"){
+  
+      console.log(props?.chatsArray.chatType)
+      const response = await axios.post(`http://localhost:5000/groupChats/sendMessageInGc/${props.chatsArray._id}`, {content:input, imageUrl:selectedFile , type:"group" });
       console.log(response.data);
 
     }else{
@@ -85,7 +86,7 @@ function ChatsBlock(props) {
         <div className="text-center text-gray-800 mt-4">Loading...</div>
       ) : (
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
-          {props?.chatsArray?.messages?.map((item) => (
+          {    props?.chatsArray?.messages?.map((item) => (
             <div
               key={item._id}
               className={`group px-4 py-2 rounded-lg shadow-sm text-white ${item.sender === user.id
